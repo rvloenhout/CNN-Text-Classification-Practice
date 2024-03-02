@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Classification</title>
+</head>
+<body>
+    <h1>Text Classification</h1>
+    <form method="post" action="/predict">
+        <label for="text">Enter text:</label>
+        <input type="text" name="text" required>
+        <button type="submit">Predict</button>
+    </form>
+    {% if prediction %}
+        <p><strong>Prediction:</strong> {{ prediction }}</p>
+    {% endif %}
+</body>
+</html>

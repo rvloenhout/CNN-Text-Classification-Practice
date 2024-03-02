@@ -5,27 +5,38 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 app = Flask(__name__)
 
-# Load your pre-trained XGBoost model
-xgb_model = joblib.load('/path/to/your/model.pkl')
+# Load pre-trained XGBoost model
+xgb_model = joblib.load("./xgboost.pkl")
 
-# Load the TF-IDF vectorizer
-vectorizer = joblib.load('/path/to/your/vectorizer.pkl')
+# Load TF-IDF vectorizer
+vectorizer = joblib.load("./vectorizer.pkl")
 
-@app.route('/')
+@app.route("/")
 def home():
-    return render_template('index.html')
+    return render_template("index.html")
 
-@app.route('/predict', methods=['POST'])
+@app.route("/predict", methods=["POST"])
 def predict():
-    if request.method == 'POST':
-        text = request.form['text']
+    if request.method == "POST":
+        text = request.form["text"]
         
-        # Preprocess the input text using the same vectorizer used during training
+        # Preprocess the input text
         text_tfidf = vectorizer.transform([text])
 
-        # Make a prediction
         prediction = xgb_model.predict(text_tfidf)[0]
-        return render_template('index.html', prediction=prediction)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+        if prediction == 0:
+            text_class = "Politics"
+        elif prediction == 1:
+            text_class = "Sport"
+        elif prediction == 2:
+            text_class = "Technology"
+        elif prediction == 3:
+            text_class = "Entertainment"
+        elif prediction == 4:
+            text_class = "Business"
+
+        return render_template("index.html", prediction=text_class)
+
+if __name__ == "__main__":
+    app.run(debug=True, port=4996)
