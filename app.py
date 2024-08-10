@@ -1,7 +1,5 @@
 from flask import Flask, render_template, request
 import joblib
-import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
 
 app = Flask(__name__)
 
