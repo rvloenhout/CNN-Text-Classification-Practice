@@ -21,20 +21,18 @@ def predict():
         # Preprocess the input text
         text_tfidf = vectorizer.transform([text])
 
-        prediction = xgb_model.predict(text_tfidf)[0]
+        # Get prediction and confidence scores
+        prediction = int(xgb_model.predict(text_tfidf)) 
+        confidence_scores = xgb_model.predict_proba(text_tfidf)
 
-        if prediction == 0:
-            text_class = "Politics"
-        elif prediction == 1:
-            text_class = "Sport"
-        elif prediction == 2:
-            text_class = "Technology"
-        elif prediction == 3:
-            text_class = "Entertainment"
-        elif prediction == 4:
-            text_class = "Business"
+        # Define labels
+        labels = ["Politics", "Sport", "Technology", "Entertainment", "Business"]
 
-        return render_template("index.html", prediction=text_class)
+        # Get the predicted label and confidence score
+        predicted_label = labels[prediction]
+        confidence_score = round(confidence_scores[0][prediction] * 100, 2)
+
+        return render_template("index.html", prediction=predicted_label, confidence=confidence_score)
 
 if __name__ == "__main__":
-    app.run(debug=True, port=4996)
+    app.run(debug=True, host="0.0.0.0", port=4996)

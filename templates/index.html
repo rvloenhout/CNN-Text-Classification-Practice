@@ -7,13 +7,15 @@
 </head>
 <body>
     <h1>Text Classification</h1>
-    <form method="post" action="/predict">
+    <form action="/predict" method="post">
         <label for="text">Enter text:</label>
-        <input type="text" name="text" required>
+        <input type="text" id="text" name="text" required>
         <button type="submit">Predict</button>
     </form>
+
     {% if prediction %}
-        <p><strong>Prediction:</strong> {{ prediction }}</p>
+        <h2>Prediction: {{ prediction }}</h2>
+        <h3>Confidence Score: {{ confidence }}%</h3>
     {% endif %}
 </body>
 </html>
